@@ -52,9 +52,6 @@
 	const makePlaceholderStyle = (show) =>
 		`#placeholder { display: ${show ? "flex" : "none"}; }`;
 
-	const preloadStylesheet = new CSSStyleSheet();
-	preloadStylesheet.replaceSync(makePlaceholderStyle(false));
-
 	GM_addStyle(makeTwitterLogoStyle(false));
 	GM_addStyle(makePlaceholderStyle(false));
 	GM_addStyle(COLOR_CSS);
