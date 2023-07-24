@@ -2,4 +2,4 @@
 
 > Fuck you Elon Musk! Let's bring Twitter Bird back
 
-[Install on Greasyfork](https://greasyfork.org/zh-CN/scripts/471597-elon-musk)
+[Install on Greasyfork](https://greasyfork.org/zh-CN/scripts/471602-elon-musk)
