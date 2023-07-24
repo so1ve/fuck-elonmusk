@@ -1,0 +1,6 @@
+{
+	"extends": "@so1ve",
+	"globals": {
+		"GM_addStyle": "readonly"
+	}
+}
