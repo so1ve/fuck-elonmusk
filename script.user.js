@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Fuck Elon Musk
 // @namespace    https://greasyfork.org/scripts/471597-elon-musk
-// @version      0.1.3
+// @version      0.2.0
 // @description  Fuck Elon Musk! Let's bring the Twitter bird back.
 // @author       Ray (https://github.com/so1ve)
 // @license      MIT
