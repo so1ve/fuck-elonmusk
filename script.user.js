@@ -94,9 +94,6 @@
 
 		if (location.pathname === "/home") {
 			waitForElement(NAVBAR_LOGO_SELECTOR).then((div) => {
-				if (div.children.length !== 2) {
-					return;
-				}
 				div.children[1].innerHTML = TWITTER_LOGO;
 				div.children[1].classList.add("__FUCK_MUSK_BLUE__");
 				GM_addStyle(makeTwitterNavbarLogoStyle(true));
