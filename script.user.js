@@ -58,8 +58,8 @@
 	GM_addStyle(makePlaceholderStyle(false));
 	GM_addStyle(COLOR_CSS);
 
-	const iconEl = document.querySelector('link[rel="shortcut icon"]');
-	iconEl.href = `data:image/svg+xml,${TWITTER_LOGO_FOR_SHORTCUT_ICON}`;
+	const iconElement = document.querySelector('link[rel="shortcut icon"]');
+	iconElement.href = `data:image/svg+xml,${TWITTER_LOGO_FOR_SHORTCUT_ICON}`;
 
 	waitForElement("#placeholder").then((placeholder) => {
 		placeholder.children[0].innerHTML = TWITTER_LOGO;
