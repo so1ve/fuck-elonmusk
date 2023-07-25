@@ -44,30 +44,43 @@
 			});
 		});
 
+	const LOGO_SELECTOR = 'a[href="/home"][aria-label="Twitter"]';
+	const NAVBAR_LOGO_SELECTOR =
+		'div[data-testid="TopNavBar"] > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)';
+	const PLACEHOLDER_SELECTOR = "#placeholder";
+
 	/** @param {boolean} show */
 	const makeTwitterLogoStyle = (show) =>
-		`a[href="/home"][aria-label="Twitter"] { display: ${
-			show ? "flex" : "block"
-		}; }`;
+		`${LOGO_SELECTOR} { display: ${show ? "flex" : "block"}; }`;
+
+	/** @param {boolean} show */
+	const makeTwitterNavbarLogoStyle = (show) =>
+		`${NAVBAR_LOGO_SELECTOR} { display: ${show ? "flex" : "block"}; }`;
 
 	/** @param {boolean} show */
 	const makePlaceholderStyle = (show) =>
-		`#placeholder { display: ${show ? "flex" : "none"}; }`;
+		`${PLACEHOLDER_SELECTOR} { display: ${show ? "flex" : "none"}; }`;
 
 	GM_addStyle(makeTwitterLogoStyle(false));
+	GM_addStyle(makeTwitterNavbarLogoStyle(false));
 	GM_addStyle(makePlaceholderStyle(false));
 	GM_addStyle(COLOR_CSS);
 
 	const iconElement = document.querySelector('link[rel="shortcut icon"]');
 	iconElement.href = TWITTER_LOGO_FOR_SHORTCUT_ICON;
 
-	waitForElement("#placeholder").then((placeholder) => {
+	waitForElement(PLACEHOLDER_SELECTOR).then((placeholder) => {
 		placeholder.children[0].innerHTML = TWITTER_LOGO;
 		GM_addStyle(makePlaceholderStyle(true));
 	});
 
-	waitForElement('a[href="/home"][aria-label="Twitter"]').then((a) => {
+	waitForElement(LOGO_SELECTOR).then((a) => {
 		a.children[0].innerHTML = TWITTER_LOGO;
 		GM_addStyle(makeTwitterLogoStyle(true));
+	});
+
+	waitForElement(NAVBAR_LOGO_SELECTOR).then((div) => {
+		div.innerHTML = TWITTER_LOGO;
+		GM_addStyle(makeTwitterNavbarLogoStyle(true));
 	});
 })();
