@@ -69,18 +69,22 @@
 	const iconElement = document.querySelector('link[rel="shortcut icon"]');
 	iconElement.href = TWITTER_LOGO_FOR_SHORTCUT_ICON;
 
-	waitForElement(PLACEHOLDER_SELECTOR).then((placeholder) => {
-		placeholder.children[0].innerHTML = TWITTER_LOGO;
-		GM_addStyle(makePlaceholderStyle(true));
-	});
+	function initChangers() {
+		waitForElement(PLACEHOLDER_SELECTOR).then((placeholder) => {
+			placeholder.children[0].innerHTML = TWITTER_LOGO;
+			GM_addStyle(makePlaceholderStyle(true));
+		});
 
-	waitForElement(LOGO_SELECTOR).then((a) => {
-		a.children[0].innerHTML = TWITTER_LOGO;
-		GM_addStyle(makeTwitterLogoStyle(true));
-	});
+		waitForElement(LOGO_SELECTOR).then((a) => {
+			a.children[0].innerHTML = TWITTER_LOGO;
+			GM_addStyle(makeTwitterLogoStyle(true));
+		});
 
-	waitForElement(NAVBAR_LOGO_SELECTOR).then((div) => {
-		div.innerHTML = TWITTER_LOGO;
-		GM_addStyle(makeTwitterNavbarLogoStyle(true));
-	});
+		waitForElement(NAVBAR_LOGO_SELECTOR).then((div) => {
+			div.innerHTML = TWITTER_LOGO;
+			GM_addStyle(makeTwitterNavbarLogoStyle(true));
+		});
+	}
+	initChangers();
+	window.addEventListener("resize", initChangers);
 })();
