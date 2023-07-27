@@ -73,26 +73,26 @@
 	const makePlaceholderStyle = (show) =>
 		`${PLACEHOLDER_SELECTOR} { display: ${show ? "flex" : "none"}; }`;
 
-	GM_addStyle(makeTwitterLogoStyle(false));
-	GM_addStyle(makeTwitterNavbarLogoStyle(false));
-	GM_addStyle(makePlaceholderStyle(false));
-	GM_addStyle(COLOR_CSS);
-
 	const iconElement = document.querySelector('link[rel="shortcut icon"]');
 	iconElement.href = TWITTER_LOGO_FOR_SHORTCUT_ICON;
 
 	function initChangers() {
+		GM_addStyle(COLOR_CSS);
+
+		GM_addStyle(makePlaceholderStyle(false));
 		waitForElement(PLACEHOLDER_SELECTOR).then((placeholder) => {
 			placeholder.children[0].innerHTML = TWITTER_LOGO;
 			GM_addStyle(makePlaceholderStyle(true));
 		});
 
+		GM_addStyle(makeTwitterLogoStyle(false));
 		waitForElement(LOGO_SELECTOR).then((a) => {
 			a.children[0].innerHTML = TWITTER_LOGO;
 			GM_addStyle(makeTwitterLogoStyle(true));
 		});
 
 		if (location.pathname === "/home") {
+			GM_addStyle(makeTwitterNavbarLogoStyle(false));
 			waitForElement(NAVBAR_LOGO_SELECTOR).then((div) => {
 				div.children[1].innerHTML = TWITTER_LOGO;
 				div.children[1].classList.add("__FUCK_MUSK_BLUE__");
