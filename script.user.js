@@ -2,7 +2,7 @@
 // @name         Fuck Elon Musk
 // @namespace    https://greasyfork.org/scripts/471597-elon-musk
 // @version      0.4.3
-// @description  Fuck Elon Musk! Let's bring the Twitter bird back.
+// @description  Fuck Elon Musk! Let's bring Twitter back.
 // @author       Ray (https://github.com/so1ve)
 // @license      MIT
 // @run-at       document-start
@@ -45,16 +45,18 @@
 			});
 		});
 
-	function observeUrlChange(callback) {
-		let oldHref = document.location.href;
+	const createObserver = (valueToWatch) => (callback) => {
+		let oldValue = valueToWatch();
 		const observer = new MutationObserver(() => {
-			if (oldHref !== document.location.href) {
-				oldHref = document.location.href;
+			if (oldValue !== valueToWatch()) {
+				oldValue = valueToWatch();
 				callback();
 			}
 		});
 		observer.observe(document.body, { childList: true, subtree: true });
-	}
+	};
+	const observeUrlChange = createObserver(() => document.location.href);
+	const observeTitleChange = createObserver(() => document.title);
 
 	const LOGO_SELECTOR = 'a[href="/home"][aria-label="Twitter"]';
 	const NAVBAR_LOGO_SELECTOR =
@@ -103,4 +105,9 @@
 	initChangers();
 	observeUrlChange(initChangers);
 	window.addEventListener("resize", initChangers);
+	observeTitleChange(() => {
+		if (document.title.endsWith("X")) {
+			document.title = `${document.title.slice(0, -1)}Twitter`;
+		}
+	});
 })();
