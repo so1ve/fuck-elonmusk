@@ -79,6 +79,9 @@
 	const NAVBAR_LOGO_SELECTOR =
 		'div[data-testid="TopNavBar"] > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)';
 	const PLACEHOLDER_SELECTOR = "#placeholder";
+	const HOMEPAGE_ICON_SELECTOR = "main > div > div > div > div > div > svg";
+	const HOMEPAGE_LEFT_ICON_SELECTOR =
+		"main > div > div > div > div:nth-child(2) > div > svg";
 	const LOGOUT_ICON_SELECTOR =
 		'div[data-testid="confirmationSheetDialog"] > svg';
 
@@ -90,6 +93,10 @@
 	const makeTwitterLogoStyle = createStyleMaker(LOGO_SELECTOR);
 	const makeTwitterNavbarLogoStyle = createStyleMaker(NAVBAR_LOGO_SELECTOR);
 	const makePlaceholderStyle = createStyleMaker(PLACEHOLDER_SELECTOR);
+	const makeHomepageIconStyle = createStyleMaker(HOMEPAGE_ICON_SELECTOR);
+	const makeHomepageLeftIconStyle = createStyleMaker(
+		HOMEPAGE_LEFT_ICON_SELECTOR,
+	);
 	const makeLogoutIconStyle = createStyleMaker(LOGOUT_ICON_SELECTOR);
 
 	function initChangers() {
@@ -110,6 +117,21 @@
 			a.children[0].innerHTML = TWITTER_LOGO;
 			GM_addStyle(makeTwitterLogoStyle(true));
 		});
+
+		if (location.pathname === "/") {
+			GM_addStyle(makeHomepageIconStyle(false));
+			waitForElement(HOMEPAGE_ICON_SELECTOR).then((svg) => {
+				svg.innerHTML = TWITTER_LOGO_G;
+				svg.classList.add("__FUCK_MUSK_BLUE__");
+				GM_addStyle(makeHomepageIconStyle(true));
+			});
+
+			GM_addStyle(makeHomepageLeftIconStyle(false));
+			waitForElement(HOMEPAGE_LEFT_ICON_SELECTOR).then((svg) => {
+				svg.innerHTML = TWITTER_LOGO_G;
+				GM_addStyle(makeHomepageLeftIconStyle(true));
+			});
+		}
 
 		if (location.pathname === "/home") {
 			GM_addStyle(makeTwitterNavbarLogoStyle(false));
