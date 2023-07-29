@@ -16,7 +16,7 @@
 	"use strict";
 
 	const COLOR_CSS =
-		'.__FUCK_MUSK_BLUE__ { color: rgb(29, 155, 240); } @media (prefers-color-scheme: dark) { a[href="/home"][aria-label="Twitter"] .__FUCK_MUSK_BLUE__ { color: rgb(231, 233, 234); } }';
+		'.__FUCK_MUSK_BLUE__ { color: rgb(29, 155, 240) !important; } @media (prefers-color-scheme: dark) { a[href="/home"][aria-label="Twitter"] .__FUCK_MUSK_BLUE__ { color: rgb(231, 233, 234) !important; } }';
 	const TWITTER_LOGO_G = `<g><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"></path></g>`;
 	const TWITTER_LOGO = `<svg viewBox="0 0 24 24" aria-hidden="true" class="__FUCK_MUSK_BLUE__ r-4qtqp9 r-yyyyoo r-16y2uox r-8kz0gk r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-lrsllp">${TWITTER_LOGO_G}</svg>`;
 	/** @see https://greasyfork.org/zh-CN/scripts/471576-f-kelonmusk-twitter-com */
@@ -31,18 +31,23 @@
 			if (document.querySelector(selector)) {
 				return resolve(document.querySelector(selector));
 			}
-
 			const observer = new MutationObserver(() => {
 				if (document.querySelector(selector)) {
 					resolve(document.querySelector(selector));
 					observer.disconnect();
 				}
 			});
-
-			observer.observe(document.body, {
-				childList: true,
-				subtree: true,
-			});
+			try {
+				observer.observe(document.body, {
+					childList: true,
+					subtree: true,
+				});
+			} catch {
+				// If failed, try again after 100ms
+				setTimeout(() => {
+					resolve(waitForElement(selector));
+				}, 100);
+			}
 		});
 
 	const createObserver = (valueToWatch) => (callback) => {
@@ -53,33 +58,46 @@
 				callback();
 			}
 		});
-		observer.observe(document.body, { childList: true, subtree: true });
+		function observe() {
+			observer.observe(document.body, {
+				childList: true,
+				subtree: true,
+			});
+		}
+		const timer = setInterval(() => {
+			if (document.body) {
+				clearInterval(timer);
+				observe();
+			}
+		}, 100);
 	};
 	const observeUrlChange = createObserver(() => document.location.href);
 	const observeTitleChange = createObserver(() => document.title);
 
+	const ICON_SELECTOR = 'link[rel="shortcut icon"]';
 	const LOGO_SELECTOR = 'a[href="/home"][aria-label="Twitter"]';
 	const NAVBAR_LOGO_SELECTOR =
 		'div[data-testid="TopNavBar"] > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)';
 	const PLACEHOLDER_SELECTOR = "#placeholder";
+	const LOGOUT_ICON_SELECTOR =
+		'div[data-testid="confirmationSheetDialog"] > svg';
 
-	/** @param {boolean} show */
-	const makeTwitterLogoStyle = (show) =>
-		`${LOGO_SELECTOR} { display: ${show ? "flex" : "none"}; }`;
-
-	/** @param {boolean} show */
-	const makeTwitterNavbarLogoStyle = (show) =>
-		`${NAVBAR_LOGO_SELECTOR} { display: ${show ? "flex" : "none"}; }`;
-
-	/** @param {boolean} show */
-	const makePlaceholderStyle = (show) =>
-		`${PLACEHOLDER_SELECTOR} { display: ${show ? "flex" : "none"}; }`;
-
-	const iconElement = document.querySelector('link[rel="shortcut icon"]');
-	iconElement.href = TWITTER_LOGO_FOR_SHORTCUT_ICON;
+	const createStyleMaker =
+		(selector) =>
+		/** @param {boolean} show */
+		(show) =>
+			`${selector} { display: ${show ? "flex" : "none"}; }`;
+	const makeTwitterLogoStyle = createStyleMaker(LOGO_SELECTOR);
+	const makeTwitterNavbarLogoStyle = createStyleMaker(NAVBAR_LOGO_SELECTOR);
+	const makePlaceholderStyle = createStyleMaker(PLACEHOLDER_SELECTOR);
+	const makeLogoutIconStyle = createStyleMaker(LOGOUT_ICON_SELECTOR);
 
 	function initChangers() {
 		GM_addStyle(COLOR_CSS);
+
+		waitForElement(ICON_SELECTOR).then((iconEl) => {
+			iconEl.href = TWITTER_LOGO_FOR_SHORTCUT_ICON;
+		});
 
 		GM_addStyle(makePlaceholderStyle(false));
 		waitForElement(PLACEHOLDER_SELECTOR).then((placeholder) => {
@@ -99,6 +117,15 @@
 				div.children[1].innerHTML = TWITTER_LOGO;
 				div.children[1].classList.add("__FUCK_MUSK_BLUE__");
 				GM_addStyle(makeTwitterNavbarLogoStyle(true));
+			});
+		}
+
+		if (location.pathname === "/logout") {
+			GM_addStyle(makeLogoutIconStyle(false));
+			waitForElement(LOGOUT_ICON_SELECTOR).then((svg) => {
+				svg.classList.add("__FUCK_MUSK_BLUE__");
+				svg.innerHTML = TWITTER_LOGO_G;
+				GM_addStyle(makeLogoutIconStyle(true));
 			});
 		}
 	}
