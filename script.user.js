@@ -106,7 +106,7 @@
 		HOMEPAGE_LEFT_ICON_SELECTOR,
 	);
 	const makeLogoutIconStyle = createStyleMaker(LOGOUT_ICON_SELECTOR);
-const makeVerifiedStyle = createStyleMaker(VERFIED_SELECTOR);
+	const makeVerifiedStyle = createStyleMaker(VERFIED_SELECTOR);
 
 	function initChangers() {
 		GM_addStyle(COLOR_CSS);
