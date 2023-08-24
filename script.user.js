@@ -89,7 +89,7 @@
 	const LOGOUT_ICON_SELECTOR =
 		'div[data-testid="confirmationSheetDialog"] > svg';
 	const NOTIFICATIONS_SELECTOR = "article";
-	const VERFIED_SELECTOR = 'a[href="/i/verified-choose"]'
+	const VERFIED_SELECTOR = 'a[href="/i/verified-choose"]';
 
 	const createStyleMaker =
 		(selector) =>
@@ -115,7 +115,7 @@
 		});
 
 		waitForElements(VERFIED_SELECTOR).then(([aEl]) => {
-			aEl.style.display = 'none'
+			aEl.style.display = "none";
 		});
 
 		GM_addStyle(makePlaceholderStyle(false));
@@ -143,7 +143,6 @@
 				svg.innerHTML = TWITTER_LOGO_G;
 				GM_addStyle(makeHomepageLeftIconStyle(true));
 			});
-
 		}
 
 		if (location.pathname === "/home") {
