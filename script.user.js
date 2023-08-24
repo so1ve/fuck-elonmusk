@@ -106,6 +106,7 @@
 		HOMEPAGE_LEFT_ICON_SELECTOR,
 	);
 	const makeLogoutIconStyle = createStyleMaker(LOGOUT_ICON_SELECTOR);
+const makeVerifiedStyle = createStyleMaker(VERFIED_SELECTOR);
 
 	function initChangers() {
 		GM_addStyle(COLOR_CSS);
@@ -114,9 +115,7 @@
 			iconEl.href = TWITTER_LOGO_FOR_SHORTCUT_ICON;
 		});
 
-		waitForElements(VERFIED_SELECTOR).then(([aEl]) => {
-			aEl.style.display = "none";
-		});
+		GM_addStyle(makeVerifiedStyle(false));
 
 		GM_addStyle(makePlaceholderStyle(false));
 		waitForElements(PLACEHOLDER_SELECTOR).then(([placeholder]) => {
