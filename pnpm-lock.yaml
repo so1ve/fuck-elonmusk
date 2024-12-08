@@ -9,8 +9,8 @@ devDependencies:
     specifier: ^0.116.1
     version: 0.116.1(eslint@8.57.1)(prettier@3.4.2)(typescript@5.7.2)(vitest@2.1.8)
   '@so1ve/prettier-config':
-    specifier: ^0.119.0
-    version: 0.119.3(prettier@3.4.2)
+    specifier: ^0.123.0
+    version: 0.123.0(prettier@3.4.2)
   '@types/node':
     specifier: ^18.17.1
     version: 18.19.67
@@ -728,20 +728,20 @@ packages:
       prettier-plugin-toml: 0.3.5
     dev: true
 
-  /@so1ve/prettier-config@0.119.3(prettier@3.4.2):
-    resolution: {integrity: sha512-2qKROIL+IooEDAjrtTJHPgtbShCVeuO7pwG/OGkqdQxYnBgZMdc0sjZzBAKfDs7quBVJ24DPVKk8ah5GInnwXw==}
+  /@so1ve/prettier-config@0.123.0(prettier@3.4.2):
+    resolution: {integrity: sha512-DHKLbt2QC04t0aOHduWVsnTnq86wjHVrGkNTR5zKopieITdFHeEYLYcbAx2gJL0SrWu/sOqgxlLb/PQ9ropSPQ==}
     peerDependencies:
       prettier: ^3.0.0
     dependencies:
-      '@so1ve/prettier-plugin-toml': 0.119.3(prettier@3.4.2)
+      '@so1ve/prettier-plugin-toml': 0.123.0(prettier@3.4.2)
       prettier: 3.4.2
-      prettier-plugin-astro: 0.11.1
-      prettier-plugin-curly-and-jsdoc: 0.119.3(prettier@3.4.2)
+      prettier-plugin-astro: 0.12.3
+      prettier-plugin-curly-and-jsdoc: 0.123.0(prettier@3.4.2)
       prettier-plugin-pkgsort: 0.2.1(prettier@3.4.2)
     dev: true
 
-  /@so1ve/prettier-plugin-toml@0.119.3(prettier@3.4.2):
-    resolution: {integrity: sha512-28FEIn+Sq1V7NT0CFMsVbL3CWWQnjM4pJ16fkpGYwiIF9E356IF5EsdufFDhXKwtT4jbMSTwrSzR4+GloryvYQ==}
+  /@so1ve/prettier-plugin-toml@0.123.0(prettier@3.4.2):
+    resolution: {integrity: sha512-NuyaMFA68SiZYAog6/CQ0QpczBRS+kJyURkzv5Gs8kBaIJEGx0YyfBFlzCdFeA5wa4xsHbmT1oCjdLZ+LVjGgw==}
     peerDependencies:
       prettier: ^3.0.0
     dependencies:
@@ -2492,6 +2492,7 @@ packages:
 
   /glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -2614,6 +2615,7 @@ packages:
 
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
@@ -3289,7 +3291,16 @@ packages:
     engines: {node: ^14.15.0 || >=16.0.0}
     dependencies:
       '@astrojs/compiler': 1.8.2
-      prettier: 3.0.2
+      prettier: 3.4.2
+      sass-formatter: 0.7.7
+    dev: true
+
+  /prettier-plugin-astro@0.12.3:
+    resolution: {integrity: sha512-GthUSu3zCvmtVyqlArosez0xE08vSJ0R1sWurxIWpABaCkNGYFANoUdFkqmIo54EV2uPLGcVJzOucWvCjPBWvg==}
+    engines: {node: ^14.15.0 || >=16.0.0}
+    dependencies:
+      '@astrojs/compiler': 1.8.2
+      prettier: 3.4.2
       sass-formatter: 0.7.7
     dev: true
 
@@ -3301,8 +3312,8 @@ packages:
       prettier: 3.4.2
     dev: true
 
-  /prettier-plugin-curly-and-jsdoc@0.119.3(prettier@3.4.2):
-    resolution: {integrity: sha512-TvW0X7EDU6xeNMDinuKyKggzz+mxHoyu7cycv1TmtdanEW43lNec3y2Z4NgB9iQ0eLCd00/2Jla/6gn5FQterA==}
+  /prettier-plugin-curly-and-jsdoc@0.123.0(prettier@3.4.2):
+    resolution: {integrity: sha512-tLsm49FDRb3bAqFpPJJ8gX1rAVVHjwDrbzKPSrCk+uI7rPn9FJ/VAAb9exv4jOYSSoNLgH86LxRIRKh8P+QjiA==}
     peerDependencies:
       prettier: ^3.0.0
     dependencies:
@@ -3329,12 +3340,6 @@ packages:
   /prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
-    hasBin: true
-    dev: true
-
-  /prettier@3.0.2:
-    resolution: {integrity: sha512-o2YR9qtniXvwEZlOKbveKfDQVyqxbEIWn48Z8m3ZJjBjcCmUy3xZGIv+7AkaeuaTr6yPXJjwv07ZWlsWbEy1rQ==}
-    engines: {node: '>=14'}
     hasBin: true
     dev: true
 
