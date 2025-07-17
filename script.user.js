@@ -90,6 +90,7 @@
 		'div[data-testid="confirmationSheetDialog"] > svg';
 	const NOTIFICATIONS_SELECTOR = "article";
 	const VERFIED_SELECTOR = 'a[href="/i/verified-choose"]';
+	const POSTS_TEXT_SELECTOR = 'span:contains("Posts"), div:contains("Posts"), a:contains("Posts")';
 
 	const createStyleMaker =
 		(selector) =>
@@ -108,6 +109,36 @@
 	const makeLogoutIconStyle = createStyleMaker(LOGOUT_ICON_SELECTOR);
 	const makeVerifiedStyle = createStyleMaker(VERFIED_SELECTOR);
 
+	/**
+	 * Replace "Posts" with "Tweets" in text content
+	 * @param {Element} element 
+	 */
+	function replacePostsWithTweets(element) {
+		// Only replace if the element contains exactly "Posts" to avoid partial matches
+		if (element.textContent && element.textContent.trim() === "Posts") {
+			element.textContent = "Tweets";
+		}
+		// Also check for elements where "Posts" is part of a larger text, but only as a whole word
+		else if (element.textContent && element.textContent.includes("Posts")) {
+			// Use word boundary regex to avoid partial matches like "PostScript"
+			element.textContent = element.textContent.replace(/\bPosts\b/g, "Tweets");
+		}
+	}
+
+	/**
+	 * Find and replace "Posts" with "Tweets" in all matching elements
+	 */
+	function replacePostsTextInPage() {
+		// Look for elements containing "Posts" text
+		const textElements = document.querySelectorAll('span, div, a, button, h1, h2, h3, h4, h5, h6');
+		
+		textElements.forEach(element => {
+			if (element.textContent && element.textContent.includes("Posts")) {
+				replacePostsWithTweets(element);
+			}
+		});
+	}
+
 	function initChangers() {
 		GM_addStyle(COLOR_CSS);
 
@@ -116,6 +147,9 @@
 		});
 
 		GM_addStyle(makeVerifiedStyle(false));
+
+		// Replace "Posts" with "Tweets" in text content
+		replacePostsTextInPage();
 
 		GM_addStyle(makePlaceholderStyle(false));
 		waitForElements(PLACEHOLDER_SELECTOR).then(([placeholder]) => {
@@ -173,9 +207,29 @@
 				}
 			});
 		}
+
+		// Set up observer for dynamic content changes to replace "Posts" with "Tweets"
+		const textObserver = new MutationObserver(() => {
+			replacePostsTextInPage();
+		});
+		
+		const timer = setInterval(() => {
+			if (document.body) {
+				clearInterval(timer);
+				textObserver.observe(document.body, {
+					childList: true,
+					subtree: true,
+					characterData: true
+				});
+			}
+		}, 100);
 	}
 	initChangers();
-	observeUrlChange(initChangers);
+	observeUrlChange(() => {
+		initChangers();
+		// Also replace posts text on URL changes
+		setTimeout(replacePostsTextInPage, 500);
+	});
 	window.addEventListener("resize", initChangers);
 	observeTitleChange(() => {
 		if (document.title.endsWith("X")) {
